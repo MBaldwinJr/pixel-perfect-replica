@@ -22,6 +22,13 @@
       "when": 1793713331737,
       "tag": "0002_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793723510808,
+      "tag": "0003_security_hardening_and_suspension_guard",
+      "breakpoints": true
     }
   ]
 }
