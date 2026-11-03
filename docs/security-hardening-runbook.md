@@ -4,10 +4,10 @@
 
 Apply these SQL migrations to a **staging/test Supabase project first**, in order:
 
-1. `drizzle/migrations/0003_security_hardening.sql`
-2. `drizzle/migrations/0004_guard_global_account_suspension.sql`
+1. `drizzle/migrations/0003_security_hardening_and_suspension_guard.sql`
+2. `drizzle/migrations/0005_security_search_path_and_profile_admin.sql`
 
-Take a database backup before applying to production. These migrations change authorization helpers, RLS policies, membership state and administrator-protection triggers. They have **not** been applied to any hosted database by this repository change.
+Take a database backup before applying to production. These migrations change authorization helpers, RLS policies, membership state, administrator-protection triggers and profile visibility for authorized user management. They have **not** been applied to any hosted database by this repository change.
 
 ## Bootstrap the first administrator
 
@@ -56,6 +56,7 @@ Do not run the insert for an unverified email or when an active administrator al
 - Run `npm install`, `npm run lint`, `npm test` and `npm run build` in the project environment.
 - Confirm that a public signup creates no company role.
 - Confirm that an administrator can create a user and assign only the intended company roles.
+- Confirm that an active administrator can view an inactive colleague's profile to reactivate it, while the inactive account cannot read colleagues' profiles.
 - Confirm that deactivating a company membership removes access to that company without suspending the same person in other companies.
 - Confirm that removing/demoting/deactivating the last active administrator is rejected.
 - Confirm that audit records are created for membership changes.
