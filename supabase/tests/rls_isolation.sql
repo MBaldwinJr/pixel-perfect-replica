@@ -15,11 +15,15 @@ insert into public.user_roles (company_id, user_id, role) values
 create temp table results(test text, ok boolean);
 grant all on results to authenticated;
 
--- first signup became Peixoto admin; second did not
-insert into results select 'bootstrap: first user is Peixoto admin',
-  exists(select 1 from public.user_roles where user_id='11111111-1111-4111-8111-111111111111' and role='admin' and company_id='a0000000-0000-4000-8000-000000000001');
-insert into results select 'bootstrap: later users get no automatic role',
+-- Public signups must never receive a company role automatically.
+insert into results select 'bootstrap: first public signup receives no admin role',
+  not exists(select 1 from public.user_roles where user_id='11111111-1111-4111-8111-111111111111');
+insert into results select 'bootstrap: later public signups receive no automatic role',
   not exists(select 1 from public.user_roles where user_id='44444444-4444-4444-8444-444444444444');
+
+-- Simulate a trusted, out-of-band administrator bootstrap for the remaining RLS tests.
+insert into public.user_roles(company_id, user_id, role)
+values ('a0000000-0000-4000-8000-000000000001','11111111-1111-4111-8111-111111111111','admin');
 
 set local role authenticated;
 
@@ -39,6 +43,8 @@ insert into results select 'compras cannot update company', (select count(*) fro
 insert into results select 'compras cannot read audit', (select count(*) from public.audit_logs)=0;
 insert into results select 'compras cannot read integrations', (select count(*) from public.integration_configs)=0;
 insert into results select 'compras sees only own roles', (select count(*) from public.user_roles)=1;
+insert into results select 'active membership is required for company visibility',
+  (select count(*) from public.companies)=1;
 do $$ begin
   begin
     insert into public.user_roles(company_id,user_id,role) values ('a0000000-0000-4000-8000-000000000001','22222222-2222-4222-8222-222222222222','admin');
@@ -46,6 +52,18 @@ do $$ begin
   exception when others then insert into results values ('compras cannot self-promote to admin', true);
   end;
 end $$;
+
+-- Deactivate the compras membership from the Peixoto administrator context.
+select set_config('request.jwt.claims','{"sub":"11111111-1111-4111-8111-111111111111","role":"authenticated"}',true);
+update public.user_roles
+set active = false
+where company_id='a0000000-0000-4000-8000-000000000001'
+  and user_id='22222222-2222-4222-8222-222222222222';
+select set_config('request.jwt.claims','{"sub":"22222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
+insert into results select 'deactivated membership cannot read company',
+  not exists(select 1 from public.companies where id='a0000000-0000-4000-8000-000000000001');
+insert into results select 'deactivated membership cannot read colleagues',
+  not exists(select 1 from public.profiles where id='11111111-1111-4111-8111-111111111111');
 
 -- Other company admin
 select set_config('request.jwt.claims','{"sub":"33333333-3333-4333-8333-333333333333","role":"authenticated"}',true);
@@ -79,8 +97,19 @@ do $$ begin
 end $$;
 
 reset role;
--- Report and abort: the exception guarantees every test row above is rolled back.
-do $$ begin
-  raise exception E'RLS TEST REPORT\n%', (select string_agg(case when ok then 'PASS ' else 'FAIL ' end || test, E'\n') from results);
-end $$;
+-- Emit a report; fail only when an assertion failed. Successful runs roll back cleanly.
+do $
+declare
+  report text;
+  failures integer;
+begin
+  select string_agg(case when ok then 'PASS ' else 'FAIL ' end || test, E'\n' order by test),
+         count(*) filter (where not ok)
+    into report, failures
+    from results;
+  raise notice E'RLS TEST REPORT\n%', report;
+  if failures > 0 then
+    raise exception 'RLS isolation test failed: % assertion(s).', failures;
+  end if;
+end $;
 rollback;
