@@ -38,12 +38,14 @@ export const createCompanyUser = createServerFn({ method: "POST" })
       throw new Error(error?.message.includes("already") ? "Este e-mail já possui conta." : error?.message ?? "Falha ao criar usuário.");
     }
 
-    // Roles are inserted as the calling admin so RLS and audit triggers apply.
     const { error: roleError } = await context.supabase
       .from("user_roles")
       .insert(data.roles.map((role) => ({ company_id: data.companyId, user_id: created.user.id, role })));
     if (roleError) {
-      await supabaseAdmin.auth.admin.deleteUser(created.user.id);
+      const { error: cleanupError } = await supabaseAdmin.auth.admin.deleteUser(created.user.id);
+      if (cleanupError) {
+        throw new Error(`Usuário criado, mas a atribuição de perfil falhou e a conta não pôde ser removida: ${roleError.message}. Limpeza: ${cleanupError.message}`);
+      }
       throw new Error(roleError.message);
     }
     return { userId: created.user.id };
@@ -62,33 +64,25 @@ export const setCompanyUserActive = createServerFn({ method: "POST" })
     await assertCompanyAdmin(context.supabase, data.companyId);
     if (data.userId === context.userId) throw new Error("Você não pode desativar a própria conta.");
 
-    const { data: membership, error: mErr } = await context.supabase
+    const { data: membership, error: membershipError } = await context.supabase
       .from("user_roles")
-      .select("id")
+      .select("id, active")
       .eq("company_id", data.companyId)
       .eq("user_id", data.userId)
       .limit(1);
-    if (mErr) throw new Error(mErr.message);
+    if (membershipError) throw new Error(membershipError.message);
     if (!membership?.length) throw new Error("Usuário não pertence a esta empresa.");
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("profiles").update({ active: data.active }).eq("id", data.userId);
-    if (error) throw new Error(error.message);
+    // The active flag is scoped to this company. Database trigger protects the last
+    // active administrator and serializes concurrent attempts. Audit is trigger-based.
+    const { data: updated, error: updateError } = await context.supabase
+      .from("user_roles")
+      .update({ active: data.active })
+      .eq("company_id", data.companyId)
+      .eq("user_id", data.userId)
+      .select("id");
+    if (updateError) throw new Error(updateError.message);
+    if (!updated?.length) throw new Error("Nenhum vínculo foi atualizado. Verifique as permissões e tente novamente.");
 
-    // Revoke live sessions when deactivating.
-    if (!data.active) {
-      await supabaseAdmin.auth.admin.updateUserById(data.userId, { ban_duration: "876000h" });
-    } else {
-      await supabaseAdmin.auth.admin.updateUserById(data.userId, { ban_duration: "none" });
-    }
-
-    await supabaseAdmin.from("audit_logs").insert({
-      company_id: data.companyId,
-      user_id: context.userId,
-      action: data.active ? "activate_user" : "deactivate_user",
-      entity: "profiles",
-      entity_id: data.userId,
-      details: {},
-    });
-    return { ok: true };
+    return { ok: true, updatedMemberships: updated.length };
   });
