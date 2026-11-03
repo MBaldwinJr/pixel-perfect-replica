@@ -49,7 +49,7 @@ export function AppSidebar({ roles }: { readonly roles: readonly AppRole[] }) {
                     <SidebarMenuButton asChild isActive={path === href} tooltip={m.title}>
                       <Link {...link}>
                         <Icon className="size-4" aria-hidden />
-                        <span>{m.title}</span>
+                        <span className="truncate pr-10">{m.title}</span>
                       </Link>
                     </SidebarMenuButton>
                     {m.status === "em_desenvolvimento" && !collapsed && (

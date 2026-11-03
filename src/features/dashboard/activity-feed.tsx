@@ -12,15 +12,15 @@ const ENTITY_LABELS: Readonly<Record<string, string>> = {
 };
 
 const ACTION_LABELS: Readonly<Record<string, string>> = {
-  insert: "criado",
-  update: "alterado",
-  delete: "removido",
-  activate_user: "reativado",
-  deactivate_user: "desativado",
+  insert: "Criação",
+  update: "Alteração",
+  delete: "Remoção",
+  activate_user: "Reativação",
+  deactivate_user: "Desativação",
 };
 
 function describe(log: AuditLog): string {
-  return `${ENTITY_LABELS[log.entity] ?? log.entity} ${ACTION_LABELS[log.action] ?? log.action}`;
+  return `${ACTION_LABELS[log.action] ?? log.action} · ${ENTITY_LABELS[log.entity] ?? log.entity}`;
 }
 
 export function ActivityFeed({ companyId, canView }: { readonly companyId: string; readonly canView: boolean }) {
