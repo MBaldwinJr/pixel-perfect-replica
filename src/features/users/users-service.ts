@@ -10,28 +10,32 @@ export interface CompanyMember {
 }
 
 export async function fetchCompanyMembers(companyId: string): Promise<CompanyMember[]> {
-  const { data: roles, error } = await supabase
+  const { data: memberships, error } = await supabase
     .from("user_roles")
-    .select("user_id, role")
+    .select("user_id, role, active")
     .eq("company_id", companyId);
   if (error) throw new Error(error.message);
 
-  const ids = [...new Set(roles.map((r) => r.user_id))];
+  const ids = [...new Set(memberships.map((membership) => membership.user_id))];
   if (ids.length === 0) return [];
-  const { data: profiles, error: pErr } = await supabase
+
+  const { data: profiles, error: profileError } = await supabase
     .from("profiles")
     .select("id, full_name, email, active")
     .in("id", ids);
-  if (pErr) throw new Error(pErr.message);
+  if (profileError) throw new Error(profileError.message);
 
   return profiles
-    .map((p) => ({
-      userId: p.id,
-      fullName: p.full_name,
-      email: p.email,
-      active: p.active,
-      roles: roles.filter((r) => r.user_id === p.id).map((r) => r.role),
-    }))
+    .map((profile) => {
+      const memberRoles = memberships.filter((membership) => membership.user_id === profile.id);
+      return {
+        userId: profile.id,
+        fullName: profile.full_name,
+        email: profile.email,
+        active: profile.active && memberRoles.some((membership) => membership.active),
+        roles: memberRoles.map((membership) => membership.role),
+      };
+    })
     .sort((a, b) => (a.fullName ?? a.email).localeCompare(b.fullName ?? b.email));
 }
 
@@ -41,8 +45,8 @@ export async function replaceMemberRoles(
   current: readonly AppRole[],
   next: readonly AppRole[],
 ): Promise<void> {
-  const toAdd = next.filter((r) => !current.includes(r));
-  const toRemove = current.filter((r) => !next.includes(r));
+  const toAdd = next.filter((role) => !current.includes(role));
+  const toRemove = current.filter((role) => !next.includes(role));
   if (toAdd.length) {
     const { error } = await supabase
       .from("user_roles")
