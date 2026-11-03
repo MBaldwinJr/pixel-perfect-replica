@@ -100,7 +100,7 @@ end $$;
 
 reset role;
 -- Emit a report; fail only when an assertion failed. Successful runs roll back cleanly.
-do $
+do $report$
 declare
   report text;
   failures integer;
@@ -113,5 +113,5 @@ begin
   if failures > 0 then
     raise exception 'RLS isolation test failed: % assertion(s).', failures;
   end if;
-end $;
+end $report$;
 rollback;
