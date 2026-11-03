@@ -16,7 +16,8 @@ export async function fetchMyMembership(userId: string): Promise<Membership | nu
   const { data, error } = await supabase
     .from("user_roles")
     .select("role, company_id, companies(*)")
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .eq("active", true);
   if (error) throw new Error(error.message);
   const first = data?.find((r) => r.companies);
   if (!first?.companies) return null;
