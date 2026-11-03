@@ -1,0 +1,1 @@
+drop trigger if exists trg_audit_profiles on public.profiles;
