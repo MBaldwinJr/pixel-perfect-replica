@@ -5,15 +5,6 @@ export async function signIn(email: string, password: string): Promise<void> {
   if (error) throw new Error(translateAuthError(error.message));
 }
 
-export async function signUp(email: string, password: string, fullName: string): Promise<void> {
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: window.location.origin, data: { full_name: fullName } },
-  });
-  if (error) throw new Error(translateAuthError(error.message));
-}
-
 export async function signOut(): Promise<void> {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
