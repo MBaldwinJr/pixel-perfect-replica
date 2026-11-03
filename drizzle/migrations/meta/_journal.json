@@ -29,6 +29,13 @@
       "when": 1793723510808,
       "tag": "0003_security_hardening_and_suspension_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793730000000,
+      "tag": "0005_security_search_path_and_profile_admin",
+      "breakpoints": true
     }
   ]
 }
