@@ -59,6 +59,8 @@ update public.user_roles
 set active = false
 where company_id='a0000000-0000-4000-8000-000000000001'
   and user_id='22222222-2222-4222-8222-222222222222';
+insert into results select 'active admin can inspect inactive member for reactivation',
+  exists(select 1 from public.profiles where id='22222222-2222-4222-8222-222222222222');
 select set_config('request.jwt.claims','{"sub":"22222222-2222-4222-8222-222222222222","role":"authenticated"}',true);
 insert into results select 'deactivated membership cannot read company',
   not exists(select 1 from public.companies where id='a0000000-0000-4000-8000-000000000001');
