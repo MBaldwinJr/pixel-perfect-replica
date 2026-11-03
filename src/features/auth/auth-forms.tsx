@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { requestPasswordReset, signIn, signUp } from "./auth-service";
+import { requestPasswordReset, signIn } from "./auth-service";
 
 const emailField = z.string().trim().email("E-mail inválido").max(255);
 const passwordField = z.string().min(8, "Mínimo de 8 caracteres").max(72);
@@ -69,38 +69,10 @@ export function SignInForm({ onSuccess }: { readonly onSuccess: () => void }) {
 }
 
 export function SignUpForm() {
-  const form = useForm<z.infer<typeof signUpSchema>>({ resolver: zodResolver(signUpSchema), defaultValues: { fullName: "", email: "", password: "" } });
-  const [sent, setSent] = useState(false);
-  const submit = form.handleSubmit(async (v) => {
-    try {
-      await signUp(v.email, v.password, v.fullName);
-      setSent(true);
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Falha no cadastro.");
-    }
-  });
-  if (sent) {
-    return <p role="status" className="rounded-lg border border-success/30 bg-success/10 p-4 text-sm">Verifique seu e-mail para confirmar o cadastro. O acesso aos módulos depende da liberação de um administrador.</p>;
-  }
-  const err = form.formState.errors;
   return (
-    <form onSubmit={submit} className="grid gap-4" noValidate>
-      <div className="grid gap-1.5">
-        <Label htmlFor="su-name">Nome completo</Label>
-        <Input id="su-name" autoComplete="name" {...form.register("fullName")} />
-        <FieldError message={err.fullName?.message} />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="su-email">E-mail</Label>
-        <Input id="su-email" type="email" autoComplete="email" {...form.register("email")} />
-        <FieldError message={err.email?.message} />
-      </div>
-      <div className="grid gap-1.5">
-        <Label htmlFor="su-pass">Senha</Label>
-        <Input id="su-pass" type="password" autoComplete="new-password" {...form.register("password")} />
-        <FieldError message={err.password?.message} />
-      </div>
-      <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting ? "Enviando…" : "Criar conta"}</Button>
-    </form>
+    <div role="status" className="rounded-lg border p-4 text-sm text-muted-foreground">
+      O cadastro público está desativado por segurança. Solicite ao administrador da empresa
+      que crie seu acesso e atribua os módulos necessários.
+    </div>
   );
 }
