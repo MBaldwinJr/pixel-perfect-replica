@@ -217,7 +217,6 @@ export type Database = {
       }
       user_roles: {
         Row: {
-          active: boolean
           branch_id: string | null
           company_id: string
           created_at: string
@@ -226,7 +225,6 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          active?: boolean
           branch_id?: string | null
           company_id: string
           created_at?: string
@@ -235,7 +233,6 @@ export type Database = {
           user_id: string
         }
         Update: {
-          active?: boolean
           branch_id?: string | null
           company_id?: string
           created_at?: string
