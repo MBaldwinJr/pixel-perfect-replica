@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -38,6 +38,22 @@ jobs:
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund --no-progress
+
+      - name: Format code
+        run: npm run format
+
+      - name: Commit formatting changes
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No formatting changes to commit."
+          else
+            git commit -m "style: apply Prettier formatting"
+            git push
+          fi
 
       - name: Lint
         run: npm run lint
