@@ -6,7 +6,10 @@ export function isValidCnpj(value: string): boolean {
   const cnpj = onlyDigits(value);
   if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
   const calc = (base: string): number => {
-    const weights = base.length === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    const weights =
+      base.length === 12
+        ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+        : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     const sum = base.split("").reduce((acc, d, i) => acc + Number(d) * (weights[i] ?? 0), 0);
     const rest = sum % 11;
     return rest < 2 ? 0 : 11 - rest;

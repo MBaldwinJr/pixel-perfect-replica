@@ -1,6 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  AlertOctagon, BadgeDollarSign, Boxes, ClipboardCheck, FileText, Landmark, ShoppingCart, Truck, Wallet,
+  AlertOctagon,
+  BadgeDollarSign,
+  Boxes,
+  ClipboardCheck,
+  FileText,
+  Landmark,
+  ShoppingCart,
+  Truck,
+  Wallet,
 } from "lucide-react";
 import { KpiCard } from "@/features/dashboard/kpi-card";
 import { AlertsPanel } from "@/features/dashboard/alerts-panel";
@@ -43,23 +51,38 @@ function DashboardPage() {
   return (
     <div className="mx-auto grid max-w-7xl gap-8">
       <header>
-        <h1 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">Dashboard Executivo</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+          Dashboard Executivo
+        </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Nenhum dado foi importado ainda. Os indicadores serão preenchidos à medida que os módulos forem ativados.
+          Nenhum dado foi importado ainda. Os indicadores serão preenchidos à medida que os módulos
+          forem ativados.
         </p>
       </header>
 
       <section aria-label="Indicadores" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {KPIS.map((k) => <KpiCard key={k.label} label={k.label} icon={k.icon} value={null} hint={NO_DATA} />)}
+        {KPIS.map((k) => (
+          <KpiCard key={k.label} label={k.label} icon={k.icon} value={null} hint={NO_DATA} />
+        ))}
       </section>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section aria-labelledby="alerts-title" className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <h2 id="alerts-title" className="mb-3 font-display text-base font-semibold">Central de Alertas</h2>
+        <section
+          aria-labelledby="alerts-title"
+          className="rounded-xl border border-border bg-card p-5 shadow-sm"
+        >
+          <h2 id="alerts-title" className="mb-3 font-display text-base font-semibold">
+            Central de Alertas
+          </h2>
           <AlertsPanel company={company} />
         </section>
-        <section aria-labelledby="activity-title" className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <h2 id="activity-title" className="mb-3 font-display text-base font-semibold">Últimas Atividades</h2>
+        <section
+          aria-labelledby="activity-title"
+          className="rounded-xl border border-border bg-card p-5 shadow-sm"
+        >
+          <h2 id="activity-title" className="mb-3 font-display text-base font-semibold">
+            Últimas Atividades
+          </h2>
           <ActivityFeed companyId={company.id} canView={canAudit} />
         </section>
       </div>

@@ -1,4 +1,5 @@
 <!-- LOVABLE:BEGIN -->
+
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
 > published git history — force pushing, or rebasing/amending/squashing commits
@@ -7,9 +8,11 @@
 >
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
+
 <!-- LOVABLE:END -->
 
 ## Architecture rules
+
 - Layering: components -> hooks (`src/features/*/use-*.ts`) -> services (`*-service.ts`); pure rules live in `src/domain` with unit tests. Why: keeps business rules out of UI.
 - Authorization is enforced in Postgres RLS via `is_company_member` / `has_company_role` (security definer); UI hiding is cosmetic only. Why: backend must be the source of truth.
 - Every tenant table carries `company_id` and its policies must scope by it. Why: cross-company isolation.

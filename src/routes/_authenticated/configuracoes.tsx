@@ -23,13 +23,17 @@ export const Route = createFileRoute("/_authenticated/configuracoes")({
 function SettingsPage() {
   const { company, roles } = useCurrentMembership();
   const isAdmin = canManageCompany(roles);
-  const canViewIntegrations = roles.some((r) => ["admin", "diretoria", "fiscal", "financeiro", "auditor"].includes(r));
+  const canViewIntegrations = roles.some((r) =>
+    ["admin", "diretoria", "fiscal", "financeiro", "auditor"].includes(r),
+  );
 
   return (
     <div className="mx-auto grid max-w-5xl gap-6">
       <header>
         <h1 className="font-display text-2xl font-semibold tracking-tight">Configurações</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Toda alteração é registrada na auditoria.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Toda alteração é registrada na auditoria.
+        </p>
       </header>
       <Tabs defaultValue="empresa">
         <TabsList>
@@ -37,9 +41,15 @@ function SettingsPage() {
           <TabsTrigger value="usuarios">Usuários e perfis</TabsTrigger>
           <TabsTrigger value="integracoes">Integrações</TabsTrigger>
         </TabsList>
-        <TabsContent value="empresa" className="mt-6"><CompanyForm company={company} canEdit={isAdmin} /></TabsContent>
-        <TabsContent value="usuarios" className="mt-6"><MembersPanel companyId={company.id} canManage={isAdmin} /></TabsContent>
-        <TabsContent value="integracoes" className="mt-6"><IntegrationsPanel companyId={company.id} canView={canViewIntegrations} /></TabsContent>
+        <TabsContent value="empresa" className="mt-6">
+          <CompanyForm company={company} canEdit={isAdmin} />
+        </TabsContent>
+        <TabsContent value="usuarios" className="mt-6">
+          <MembersPanel companyId={company.id} canManage={isAdmin} />
+        </TabsContent>
+        <TabsContent value="integracoes" className="mt-6">
+          <IntegrationsPanel companyId={company.id} canView={canViewIntegrations} />
+        </TabsContent>
       </Tabs>
     </div>
   );

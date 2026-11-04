@@ -22,11 +22,11 @@ Componentes chamam hooks; hooks chamam services; ações que exigem privilégio
 
 ## Migrations
 
-| Arquivo | Conteúdo |
-|---|---|
-| 0000 | Enums, tabelas `companies`, `branches`, `profiles`, `user_roles`, `audit_logs`, `integration_configs`; funções de autorização; RLS; auditoria automática; bloqueio de credenciais em JSON; proteção do último administrador; cadastro inicial da Peixoto; integrações planejadas; criação automática de perfil (primeiro usuário vira administrador) |
-| 0001 | Confirmação administrativa do cadastro (registrada com o usuário autenticado e invalidada quando dados mudam) |
-| 0002 | Remoção de gatilho de auditoria redundante em `profiles` |
+| Arquivo | Conteúdo                                                                                                                                                                                                                                                                                                                                             |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0000    | Enums, tabelas `companies`, `branches`, `profiles`, `user_roles`, `audit_logs`, `integration_configs`; funções de autorização; RLS; auditoria automática; bloqueio de credenciais em JSON; proteção do último administrador; cadastro inicial da Peixoto; integrações planejadas; criação automática de perfil (primeiro usuário vira administrador) |
+| 0001    | Confirmação administrativa do cadastro (registrada com o usuário autenticado e invalidada quando dados mudam)                                                                                                                                                                                                                                        |
+| 0002    | Remoção de gatilho de auditoria redundante em `profiles`                                                                                                                                                                                                                                                                                             |
 
 ## Políticas RLS
 

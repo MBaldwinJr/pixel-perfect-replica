@@ -16,8 +16,11 @@ export function AlertsPanel({ company }: { readonly company: Company }) {
       <div className="text-sm">
         <p className="font-medium">Cadastro da empresa pendente de confirmação</p>
         <p className="mt-1 text-muted-foreground">
-          Os dados iniciais precisam ser revisados por um administrador antes de qualquer uso fiscal oficial.{" "}
-          <Link to="/configuracoes" className="text-primary underline-offset-4 hover:underline">Revisar cadastro</Link>
+          Os dados iniciais precisam ser revisados por um administrador antes de qualquer uso fiscal
+          oficial.{" "}
+          <Link to="/configuracoes" className="text-primary underline-offset-4 hover:underline">
+            Revisar cadastro
+          </Link>
         </p>
       </div>
     </div>

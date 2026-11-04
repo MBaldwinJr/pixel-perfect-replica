@@ -44,15 +44,27 @@ function ResetPasswordPage() {
 
   return (
     <main className="grid min-h-screen place-items-center bg-background px-4">
-      <form onSubmit={submit} className="grid w-full max-w-md gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
+      <form
+        onSubmit={submit}
+        className="grid w-full max-w-md gap-4 rounded-xl border border-border bg-card p-6 shadow-sm"
+      >
         <BrandLogo />
         <h1 className="font-display text-xl font-semibold">Nova senha</h1>
         <div className="grid gap-1.5">
           <Label htmlFor="rp-pass">Senha</Label>
-          <Input id="rp-pass" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} aria-invalid={invalid} />
+          <Input
+            id="rp-pass"
+            type="password"
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={invalid}
+          />
           {invalid && <p className="text-xs text-destructive">Mínimo de 8 caracteres.</p>}
         </div>
-        <Button type="submit" disabled={busy || password.length < 8}>{busy ? "Salvando…" : "Salvar senha"}</Button>
+        <Button type="submit" disabled={busy || password.length < 8}>
+          {busy ? "Salvando…" : "Salvar senha"}
+        </Button>
       </form>
     </main>
   );

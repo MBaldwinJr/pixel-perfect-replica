@@ -11,7 +11,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { EmptyState, ErrorState, LoadingState } from "@/components/layout/state-views";
 import { ROLE_LABELS } from "@/domain/roles";
 import { useAuth } from "@/features/auth/auth-provider";
@@ -32,9 +39,13 @@ export function MembersPanel({ companyId, canManage }: MembersPanelProps) {
     <section className="grid gap-4" aria-labelledby="members-title">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 id="members-title" className="font-display text-lg font-semibold">Usuários e perfis</h2>
+          <h2 id="members-title" className="font-display text-lg font-semibold">
+            Usuários e perfis
+          </h2>
           <p className="text-sm text-muted-foreground">
-            {canManage ? "Crie usuários, atribua perfis e controle o acesso." : "Somente administradores podem alterar usuários."}
+            {canManage
+              ? "Crie usuários, atribua perfis e controle o acesso."
+              : "Somente administradores podem alterar usuários."}
           </p>
         </div>
         {canManage && <CreateUserDialog companyId={companyId} />}
@@ -46,7 +57,10 @@ export function MembersPanel({ companyId, canManage }: MembersPanelProps) {
         ) : members.isError ? (
           <ErrorState message={members.error.message} onRetry={() => void members.refetch()} />
         ) : members.data.length === 0 ? (
-          <EmptyState title="Nenhum usuário visível" description="Seu perfil não permite listar os demais usuários." />
+          <EmptyState
+            title="Nenhum usuário visível"
+            description="Seu perfil não permite listar os demais usuários."
+          />
         ) : (
           <Table>
             <TableHeader>
@@ -69,7 +83,11 @@ export function MembersPanel({ companyId, canManage }: MembersPanelProps) {
   );
 }
 
-function MemberRow({ member, companyId, canManage }: { readonly member: CompanyMember } & MembersPanelProps) {
+function MemberRow({
+  member,
+  companyId,
+  canManage,
+}: { readonly member: CompanyMember } & MembersPanelProps) {
   const { user } = useAuth();
   const setActive = useSetMemberActive(companyId);
   const isSelf = user?.id === member.userId;
@@ -77,16 +95,25 @@ function MemberRow({ member, companyId, canManage }: { readonly member: CompanyM
   return (
     <TableRow>
       <TableCell>
-        <div className="font-medium">{member.fullName ?? "—"}{isSelf && <span className="ml-2 text-xs text-muted-foreground">(você)</span>}</div>
+        <div className="font-medium">
+          {member.fullName ?? "—"}
+          {isSelf && <span className="ml-2 text-xs text-muted-foreground">(você)</span>}
+        </div>
         <div className="text-xs text-muted-foreground">{member.email}</div>
       </TableCell>
       <TableCell>
         <div className="flex flex-wrap gap-1">
-          {member.roles.map((r) => <Badge key={r} variant="muted">{ROLE_LABELS[r]}</Badge>)}
+          {member.roles.map((r) => (
+            <Badge key={r} variant="muted">
+              {ROLE_LABELS[r]}
+            </Badge>
+          ))}
         </div>
       </TableCell>
       <TableCell>
-        <Badge variant={member.active ? "success" : "danger"}>{member.active ? "Ativo" : "Inativo"}</Badge>
+        <Badge variant={member.active ? "success" : "danger"}>
+          {member.active ? "Ativo" : "Inativo"}
+        </Badge>
       </TableCell>
       {canManage && (
         <TableCell className="text-right">
@@ -95,13 +122,19 @@ function MemberRow({ member, companyId, canManage }: { readonly member: CompanyM
             {!isSelf && (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant={member.active ? "destructive" : "outline"} size="sm" disabled={setActive.isPending}>
+                  <Button
+                    variant={member.active ? "destructive" : "outline"}
+                    size="sm"
+                    disabled={setActive.isPending}
+                  >
                     {member.active ? "Desativar" : "Reativar"}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{member.active ? "Desativar usuário?" : "Reativar usuário?"}</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      {member.active ? "Desativar usuário?" : "Reativar usuário?"}
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       {member.active
                         ? `${member.email} perderá o acesso imediatamente. A ação fica registrada na auditoria.`
@@ -110,7 +143,11 @@ function MemberRow({ member, companyId, canManage }: { readonly member: CompanyM
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => setActive.mutate({ userId: member.userId, active: !member.active })}>
+                    <AlertDialogAction
+                      onClick={() =>
+                        setActive.mutate({ userId: member.userId, active: !member.active })
+                      }
+                    >
                       Confirmar
                     </AlertDialogAction>
                   </AlertDialogFooter>

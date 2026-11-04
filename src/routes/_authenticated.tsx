@@ -25,7 +25,10 @@ function AuthenticatedLayout() {
 
   if (loading || !session || !user) return <LoadingState label="Verificando sessão…" />;
   if (membership.isPending) return <LoadingState label="Carregando permissões…" />;
-  if (membership.isError) return <ErrorState message={membership.error.message} onRetry={() => void membership.refetch()} />;
+  if (membership.isError)
+    return (
+      <ErrorState message={membership.error.message} onRetry={() => void membership.refetch()} />
+    );
 
   if (!membership.data) {
     return (
@@ -34,9 +37,12 @@ function AuthenticatedLayout() {
           <ShieldOff className="mx-auto size-8 text-warning" aria-hidden />
           <h1 className="mt-4 font-display text-xl font-semibold">Acesso aguardando liberação</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Sua conta ({user.email}) ainda não possui perfil em nenhuma empresa, ou foi desativada. Solicite a liberação a um administrador.
+            Sua conta ({user.email}) ainda não possui perfil em nenhuma empresa, ou foi desativada.
+            Solicite a liberação a um administrador.
           </p>
-          <div className="mt-6 flex justify-center"><UserMenu email={user.email ?? ""} roles={[]} /></div>
+          <div className="mt-6 flex justify-center">
+            <UserMenu email={user.email ?? ""} roles={[]} />
+          </div>
         </div>
       </main>
     );
@@ -51,7 +57,9 @@ function AuthenticatedLayout() {
             <header className="flex h-14 items-center justify-between gap-3 border-b border-border px-4">
               <div className="flex items-center gap-3">
                 <SidebarTrigger aria-label="Alternar menu" />
-                <span className="hidden text-sm text-muted-foreground md:inline">{membership.data.company.legal_name}</span>
+                <span className="hidden text-sm text-muted-foreground md:inline">
+                  {membership.data.company.legal_name}
+                </span>
               </div>
               <UserMenu email={user.email ?? ""} roles={membership.data.roles} />
             </header>

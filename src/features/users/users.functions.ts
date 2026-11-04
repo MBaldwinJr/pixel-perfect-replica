@@ -7,8 +7,14 @@ import { APP_ROLES } from "@/domain/roles";
 
 const companyIdSchema = z.string().uuid();
 
-async function assertCompanyAdmin(supabase: SupabaseClient<Database>, companyId: string): Promise<void> {
-  const { data, error } = await supabase.rpc("has_company_role", { _company_id: companyId, _roles: ["admin"] });
+async function assertCompanyAdmin(
+  supabase: SupabaseClient<Database>,
+  companyId: string,
+): Promise<void> {
+  const { data, error } = await supabase.rpc("has_company_role", {
+    _company_id: companyId,
+    _roles: ["admin"],
+  });
   if (error) throw new Error(error.message);
   if (!data) throw new Error("Acesso negado: somente administradores podem gerenciar usuários.");
 }
@@ -35,16 +41,24 @@ export const createCompanyUser = createServerFn({ method: "POST" })
       user_metadata: { full_name: data.fullName },
     });
     if (error || !created.user) {
-      throw new Error(error?.message.includes("already") ? "Este e-mail já possui conta." : error?.message ?? "Falha ao criar usuário.");
+      throw new Error(
+        error?.message.includes("already")
+          ? "Este e-mail já possui conta."
+          : (error?.message ?? "Falha ao criar usuário."),
+      );
     }
 
     const { error: roleError } = await context.supabase
       .from("user_roles")
-      .insert(data.roles.map((role) => ({ company_id: data.companyId, user_id: created.user.id, role })));
+      .insert(
+        data.roles.map((role) => ({ company_id: data.companyId, user_id: created.user.id, role })),
+      );
     if (roleError) {
       const { error: cleanupError } = await supabaseAdmin.auth.admin.deleteUser(created.user.id);
       if (cleanupError) {
-        throw new Error(`Usuário criado, mas a atribuição de perfil falhou e a conta não pôde ser removida: ${roleError.message}. Limpeza: ${cleanupError.message}`);
+        throw new Error(
+          `Usuário criado, mas a atribuição de perfil falhou e a conta não pôde ser removida: ${roleError.message}. Limpeza: ${cleanupError.message}`,
+        );
       }
       throw new Error(roleError.message);
     }
@@ -82,7 +96,8 @@ export const setCompanyUserActive = createServerFn({ method: "POST" })
       .eq("user_id", data.userId)
       .select("id");
     if (updateError) throw new Error(updateError.message);
-    if (!updated?.length) throw new Error("Nenhum vínculo foi atualizado. Verifique as permissões e tente novamente.");
+    if (!updated?.length)
+      throw new Error("Nenhum vínculo foi atualizado. Verifique as permissões e tente novamente.");
 
     return { ok: true, updatedMemberships: updated.length };
   });

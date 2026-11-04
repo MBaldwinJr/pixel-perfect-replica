@@ -81,7 +81,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Peixoto Tax Intelligence" },
-      { name: "description", content: "Plataforma de inteligência tributária, fiscal e financeira da Peixoto Materiais de Construção." },
+      {
+        name: "description",
+        content:
+          "Plataforma de inteligência tributária, fiscal e financeira da Peixoto Materiais de Construção.",
+      },
       { name: "robots", content: "noindex, nofollow" },
     ],
     links: [

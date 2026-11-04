@@ -21,7 +21,9 @@ const STATUS_LABELS: Readonly<Record<IntegrationStatus, string>> = {
   erro: "Erro",
 };
 
-const STATUS_VARIANT: Readonly<Record<IntegrationStatus, "muted" | "warning" | "success" | "danger">> = {
+const STATUS_VARIANT: Readonly<
+  Record<IntegrationStatus, "muted" | "warning" | "success" | "danger">
+> = {
   nao_configurada: "muted",
   em_configuracao: "warning",
   ativa: "success",
@@ -29,20 +31,32 @@ const STATUS_VARIANT: Readonly<Record<IntegrationStatus, "muted" | "warning" | "
   erro: "danger",
 };
 
-export function IntegrationsPanel({ companyId, canView }: { readonly companyId: string; readonly canView: boolean }) {
+export function IntegrationsPanel({
+  companyId,
+  canView,
+}: {
+  readonly companyId: string;
+  readonly canView: boolean;
+}) {
   const q = useIntegrations(companyId, canView);
 
   return (
     <section className="grid gap-4" aria-labelledby="integrations-title">
       <div>
-        <h2 id="integrations-title" className="font-display text-lg font-semibold">Integrações planejadas</h2>
+        <h2 id="integrations-title" className="font-display text-lg font-semibold">
+          Integrações planejadas
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Estrutura preparada para conexões futuras. Nenhuma integração está ativa e nenhuma credencial é armazenada aqui.
+          Estrutura preparada para conexões futuras. Nenhuma integração está ativa e nenhuma
+          credencial é armazenada aqui.
         </p>
       </div>
       <div className="rounded-xl border border-border bg-card shadow-sm">
         {!canView ? (
-          <EmptyState title="Sem permissão" description="Seu perfil não acessa as configurações de integração." />
+          <EmptyState
+            title="Sem permissão"
+            description="Seu perfil não acessa as configurações de integração."
+          />
         ) : q.isPending ? (
           <LoadingState />
         ) : q.isError ? (
@@ -50,7 +64,10 @@ export function IntegrationsPanel({ companyId, canView }: { readonly companyId: 
         ) : (
           <ul className="divide-y divide-border">
             {q.data.map((i) => (
-              <li key={i.id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3">
+              <li
+                key={i.id}
+                className="flex flex-wrap items-center justify-between gap-2 px-5 py-3"
+              >
                 <div>
                   <p className="text-sm font-medium">{i.provider}</p>
                   <p className="text-xs text-muted-foreground">{TYPE_LABELS[i.integration_type]}</p>

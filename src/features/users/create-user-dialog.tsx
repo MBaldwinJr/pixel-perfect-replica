@@ -30,7 +30,10 @@ export function CreateUserDialog({ companyId }: { readonly companyId: string }) 
   const [open, setOpen] = useState(false);
   const [roles, setRoles] = useState<AppRole[]>([]);
   const create = useCreateMember(companyId);
-  const form = useForm<FormValues>({ resolver: zodResolver(schema), defaultValues: { fullName: "", email: "", password: "" } });
+  const form = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { fullName: "", email: "", password: "" },
+  });
 
   const submit = form.handleSubmit(async (values) => {
     if (roles.length === 0) return;
@@ -44,29 +47,48 @@ export function CreateUserDialog({ companyId }: { readonly companyId: string }) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button><UserPlus className="size-4" /> Novo usuário</Button>
+        <Button>
+          <UserPlus className="size-4" /> Novo usuário
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Novo usuário</DialogTitle>
-          <DialogDescription>Defina uma senha provisória e compartilhe-a com o usuário por um canal seguro.</DialogDescription>
+          <DialogDescription>
+            Defina uma senha provisória e compartilhe-a com o usuário por um canal seguro.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="grid gap-4" noValidate>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-1.5">
               <Label htmlFor="nu-name">Nome completo</Label>
-              <Input id="nu-name" {...form.register("fullName")} aria-invalid={Boolean(err.fullName)} />
+              <Input
+                id="nu-name"
+                {...form.register("fullName")}
+                aria-invalid={Boolean(err.fullName)}
+              />
               {err.fullName && <p className="text-xs text-destructive">{err.fullName.message}</p>}
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="nu-email">E-mail</Label>
-              <Input id="nu-email" type="email" {...form.register("email")} aria-invalid={Boolean(err.email)} />
+              <Input
+                id="nu-email"
+                type="email"
+                {...form.register("email")}
+                aria-invalid={Boolean(err.email)}
+              />
               {err.email && <p className="text-xs text-destructive">{err.email.message}</p>}
             </div>
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="nu-pass">Senha provisória</Label>
-            <Input id="nu-pass" type="password" autoComplete="new-password" {...form.register("password")} aria-invalid={Boolean(err.password)} />
+            <Input
+              id="nu-pass"
+              type="password"
+              autoComplete="new-password"
+              {...form.register("password")}
+              aria-invalid={Boolean(err.password)}
+            />
             {err.password && <p className="text-xs text-destructive">{err.password.message}</p>}
           </div>
           <div className="grid gap-2">
@@ -77,8 +99,12 @@ export function CreateUserDialog({ companyId }: { readonly companyId: string }) 
             )}
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
-            <Button type="submit" disabled={create.isPending}>{create.isPending ? "Criando…" : "Criar usuário"}</Button>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={create.isPending}>
+              {create.isPending ? "Criando…" : "Criar usuário"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

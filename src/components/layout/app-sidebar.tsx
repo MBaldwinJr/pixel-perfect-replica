@@ -1,21 +1,53 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  ArrowLeftRight, Bot, Boxes, CheckSquare, FileBarChart, FileText, LayoutDashboard, Landmark,
-  Scale, Settings, ShoppingCart, SplitSquareHorizontal, Tags, Truck, type LucideIcon,
+  ArrowLeftRight,
+  Bot,
+  Boxes,
+  CheckSquare,
+  FileBarChart,
+  FileText,
+  LayoutDashboard,
+  Landmark,
+  Scale,
+  Settings,
+  ShoppingCart,
+  SplitSquareHorizontal,
+  Tags,
+  Truck,
+  type LucideIcon,
 } from "lucide-react";
 import {
-  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader,
-  SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, useSidebar,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { APP_MODULES, canAccessModule, type AppModule } from "@/domain/modules";
 import type { AppRole } from "@/domain/roles";
 import { BrandLogo } from "./brand-logo";
 
 const ICONS: Readonly<Record<string, LucideIcon>> = {
-  dashboard: LayoutDashboard, fornecedores: Truck, produtos: Boxes, "documentos-fiscais": FileText,
-  "inteligencia-tributaria": Landmark, "simulador-compras": ShoppingCart, "simulador-vendas": Tags,
-  "split-payment": SplitSquareHorizontal, conciliacao: ArrowLeftRight, "agente-ia": Bot,
-  legislacao: Scale, relatorios: FileBarChart, aprovacoes: CheckSquare, configuracoes: Settings,
+  dashboard: LayoutDashboard,
+  fornecedores: Truck,
+  produtos: Boxes,
+  "documentos-fiscais": FileText,
+  "inteligencia-tributaria": Landmark,
+  "simulador-compras": ShoppingCart,
+  "simulador-vendas": Tags,
+  "split-payment": SplitSquareHorizontal,
+  conciliacao: ArrowLeftRight,
+  "agente-ia": Bot,
+  legislacao: Scale,
+  relatorios: FileBarChart,
+  aprovacoes: CheckSquare,
+  configuracoes: Settings,
 };
 
 function moduleLink(m: AppModule) {
@@ -53,7 +85,9 @@ export function AppSidebar({ roles }: { readonly roles: readonly AppRole[] }) {
                       </Link>
                     </SidebarMenuButton>
                     {m.status === "em_desenvolvimento" && !collapsed && (
-                      <SidebarMenuBadge className="text-[0.6rem] text-muted-foreground">em dev.</SidebarMenuBadge>
+                      <SidebarMenuBadge className="text-[0.6rem] text-muted-foreground">
+                        em dev.
+                      </SidebarMenuBadge>
                     )}
                   </SidebarMenuItem>
                 );

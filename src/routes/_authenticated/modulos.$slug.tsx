@@ -39,8 +39,16 @@ function PlannedModulePage() {
         <Badge variant="warning">Em desenvolvimento</Badge>
       </header>
       <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card px-6 py-16 text-center">
-        {allowed ? <Construction className="size-8 text-warning" aria-hidden /> : <Lock className="size-8 text-muted-foreground" aria-hidden />}
-        <p className="font-medium">{allowed ? "Módulo planejado para as próximas fases" : "Seu perfil não acessa este módulo"}</p>
+        {allowed ? (
+          <Construction className="size-8 text-warning" aria-hidden />
+        ) : (
+          <Lock className="size-8 text-muted-foreground" aria-hidden />
+        )}
+        <p className="font-medium">
+          {allowed
+            ? "Módulo planejado para as próximas fases"
+            : "Seu perfil não acessa este módulo"}
+        </p>
         <p className="max-w-md text-sm text-muted-foreground">{module.description}</p>
       </div>
     </div>

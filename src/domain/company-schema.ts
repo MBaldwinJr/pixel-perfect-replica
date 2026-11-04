@@ -11,19 +11,46 @@ export const TAX_REGIME_LABELS: Readonly<Record<TaxRegime, string>> = {
 };
 
 export const BR_STATES = [
-  "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",
+  "AC",
+  "AL",
+  "AP",
+  "AM",
+  "BA",
+  "CE",
+  "DF",
+  "ES",
+  "GO",
+  "MA",
+  "MT",
+  "MS",
+  "MG",
+  "PA",
+  "PB",
+  "PR",
+  "PE",
+  "PI",
+  "RJ",
+  "RN",
+  "RS",
+  "RO",
+  "RR",
+  "SC",
+  "SP",
+  "SE",
+  "TO",
 ] as const;
 
 const optionalText = (max: number) =>
-  z.string().trim().max(max).transform((v) => (v === "" ? null : v));
+  z
+    .string()
+    .trim()
+    .max(max)
+    .transform((v) => (v === "" ? null : v));
 
 export const companyFormSchema = z.object({
   legal_name: z.string().trim().min(2, "Informe a razão social").max(200),
   trade_name: optionalText(200),
-  cnpj: z
-    .string()
-    .refine(isValidCnpj, "CNPJ inválido")
-    .transform(onlyDigits),
+  cnpj: z.string().refine(isValidCnpj, "CNPJ inválido").transform(onlyDigits),
   tax_regime: z.enum(TAX_REGIMES),
   state_registration: optionalText(30),
   municipal_registration: optionalText(30),

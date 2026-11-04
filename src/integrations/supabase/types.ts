@@ -1,451 +1,405 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.18"
-  }
+    PostgrestVersion: "14.18";
+  };
   public: {
     Tables: {
       audit_logs: {
         Row: {
-          action: string
-          company_id: string | null
-          created_at: string
-          details: Json
-          entity: string
-          entity_id: string | null
-          id: string
-          user_id: string | null
-        }
+          action: string;
+          company_id: string | null;
+          created_at: string;
+          details: Json;
+          entity: string;
+          entity_id: string | null;
+          id: string;
+          user_id: string | null;
+        };
         Insert: {
-          action: string
-          company_id?: string | null
-          created_at?: string
-          details?: Json
-          entity: string
-          entity_id?: string | null
-          id?: string
-          user_id?: string | null
-        }
+          action: string;
+          company_id?: string | null;
+          created_at?: string;
+          details?: Json;
+          entity: string;
+          entity_id?: string | null;
+          id?: string;
+          user_id?: string | null;
+        };
         Update: {
-          action?: string
-          company_id?: string | null
-          created_at?: string
-          details?: Json
-          entity?: string
-          entity_id?: string | null
-          id?: string
-          user_id?: string | null
-        }
+          action?: string;
+          company_id?: string | null;
+          created_at?: string;
+          details?: Json;
+          entity?: string;
+          entity_id?: string | null;
+          id?: string;
+          user_id?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "audit_logs_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            foreignKeyName: "audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       branches: {
         Row: {
-          active: boolean
-          city: string | null
-          cnpj: string
-          company_id: string
-          created_at: string
-          id: string
-          name: string
-          state: string
-        }
+          active: boolean;
+          city: string | null;
+          cnpj: string;
+          company_id: string;
+          created_at: string;
+          id: string;
+          name: string;
+          state: string;
+        };
         Insert: {
-          active?: boolean
-          city?: string | null
-          cnpj: string
-          company_id: string
-          created_at?: string
-          id?: string
-          name: string
-          state: string
-        }
+          active?: boolean;
+          city?: string | null;
+          cnpj: string;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          name: string;
+          state: string;
+        };
         Update: {
-          active?: boolean
-          city?: string | null
-          cnpj?: string
-          company_id?: string
-          created_at?: string
-          id?: string
-          name?: string
-          state?: string
-        }
+          active?: boolean;
+          city?: string | null;
+          cnpj?: string;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          name?: string;
+          state?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "branches_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            foreignKeyName: "branches_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       companies: {
         Row: {
-          active: boolean
-          city: string | null
-          cnpj: string
-          created_at: string
-          data_confirmed_at: string | null
-          data_confirmed_by: string | null
-          id: string
-          legal_name: string
-          municipal_registration: string | null
-          state: string
-          state_registration: string | null
-          tax_regime: Database["public"]["Enums"]["tax_regime"]
-          trade_name: string | null
-          updated_at: string
-        }
+          active: boolean;
+          city: string | null;
+          cnpj: string;
+          created_at: string;
+          data_confirmed_at: string | null;
+          data_confirmed_by: string | null;
+          id: string;
+          legal_name: string;
+          municipal_registration: string | null;
+          state: string;
+          state_registration: string | null;
+          tax_regime: Database["public"]["Enums"]["tax_regime"];
+          trade_name: string | null;
+          updated_at: string;
+        };
         Insert: {
-          active?: boolean
-          city?: string | null
-          cnpj: string
-          created_at?: string
-          data_confirmed_at?: string | null
-          data_confirmed_by?: string | null
-          id?: string
-          legal_name: string
-          municipal_registration?: string | null
-          state: string
-          state_registration?: string | null
-          tax_regime: Database["public"]["Enums"]["tax_regime"]
-          trade_name?: string | null
-          updated_at?: string
-        }
+          active?: boolean;
+          city?: string | null;
+          cnpj: string;
+          created_at?: string;
+          data_confirmed_at?: string | null;
+          data_confirmed_by?: string | null;
+          id?: string;
+          legal_name: string;
+          municipal_registration?: string | null;
+          state: string;
+          state_registration?: string | null;
+          tax_regime: Database["public"]["Enums"]["tax_regime"];
+          trade_name?: string | null;
+          updated_at?: string;
+        };
         Update: {
-          active?: boolean
-          city?: string | null
-          cnpj?: string
-          created_at?: string
-          data_confirmed_at?: string | null
-          data_confirmed_by?: string | null
-          id?: string
-          legal_name?: string
-          municipal_registration?: string | null
-          state?: string
-          state_registration?: string | null
-          tax_regime?: Database["public"]["Enums"]["tax_regime"]
-          trade_name?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
+          active?: boolean;
+          city?: string | null;
+          cnpj?: string;
+          created_at?: string;
+          data_confirmed_at?: string | null;
+          data_confirmed_by?: string | null;
+          id?: string;
+          legal_name?: string;
+          municipal_registration?: string | null;
+          state?: string;
+          state_registration?: string | null;
+          tax_regime?: Database["public"]["Enums"]["tax_regime"];
+          trade_name?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       integration_configs: {
         Row: {
-          company_id: string
-          configuration: Json
-          created_at: string
-          id: string
-          integration_type: Database["public"]["Enums"]["integration_type"]
-          last_sync_at: string | null
-          provider: string
-          status: Database["public"]["Enums"]["integration_status"]
-          updated_at: string
-        }
+          company_id: string;
+          configuration: Json;
+          created_at: string;
+          id: string;
+          integration_type: Database["public"]["Enums"]["integration_type"];
+          last_sync_at: string | null;
+          provider: string;
+          status: Database["public"]["Enums"]["integration_status"];
+          updated_at: string;
+        };
         Insert: {
-          company_id: string
-          configuration?: Json
-          created_at?: string
-          id?: string
-          integration_type: Database["public"]["Enums"]["integration_type"]
-          last_sync_at?: string | null
-          provider: string
-          status?: Database["public"]["Enums"]["integration_status"]
-          updated_at?: string
-        }
+          company_id: string;
+          configuration?: Json;
+          created_at?: string;
+          id?: string;
+          integration_type: Database["public"]["Enums"]["integration_type"];
+          last_sync_at?: string | null;
+          provider: string;
+          status?: Database["public"]["Enums"]["integration_status"];
+          updated_at?: string;
+        };
         Update: {
-          company_id?: string
-          configuration?: Json
-          created_at?: string
-          id?: string
-          integration_type?: Database["public"]["Enums"]["integration_type"]
-          last_sync_at?: string | null
-          provider?: string
-          status?: Database["public"]["Enums"]["integration_status"]
-          updated_at?: string
-        }
+          company_id?: string;
+          configuration?: Json;
+          created_at?: string;
+          id?: string;
+          integration_type?: Database["public"]["Enums"]["integration_type"];
+          last_sync_at?: string | null;
+          provider?: string;
+          status?: Database["public"]["Enums"]["integration_status"];
+          updated_at?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "integration_configs_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            foreignKeyName: "integration_configs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       profiles: {
         Row: {
-          active: boolean
-          created_at: string
-          email: string
-          full_name: string | null
-          id: string
-        }
+          active: boolean;
+          created_at: string;
+          email: string;
+          full_name: string | null;
+          id: string;
+        };
         Insert: {
-          active?: boolean
-          created_at?: string
-          email: string
-          full_name?: string | null
-          id: string
-        }
+          active?: boolean;
+          created_at?: string;
+          email: string;
+          full_name?: string | null;
+          id: string;
+        };
         Update: {
-          active?: boolean
-          created_at?: string
-          email?: string
-          full_name?: string | null
-          id?: string
-        }
-        Relationships: []
-      }
+          active?: boolean;
+          created_at?: string;
+          email?: string;
+          full_name?: string | null;
+          id?: string;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
-          active: boolean
-          branch_id: string | null
-          company_id: string
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          active: boolean;
+          branch_id: string | null;
+          company_id: string;
+          created_at: string;
+          id: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Insert: {
-          active?: boolean
-          branch_id?: string | null
-          company_id: string
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
+          active?: boolean;
+          branch_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          role: Database["public"]["Enums"]["app_role"];
+          user_id: string;
+        };
         Update: {
-          active?: boolean
-          branch_id?: string | null
-          company_id?: string
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
+          active?: boolean;
+          branch_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          role?: Database["public"]["Enums"]["app_role"];
+          user_id?: string;
+        };
         Relationships: [
           {
-            foreignKeyName: "user_roles_branch_id_fkey"
-            columns: ["branch_id"]
-            isOneToOne: false
-            referencedRelation: "branches"
-            referencedColumns: ["id"]
+            foreignKeyName: "user_roles_branch_id_fkey";
+            columns: ["branch_id"];
+            isOneToOne: false;
+            referencedRelation: "branches";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "user_roles_company_id_fkey"
-            columns: ["company_id"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
+            foreignKeyName: "user_roles_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
           },
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       has_company_role: {
         Args: {
-          _company_id: string
-          _roles: Database["public"]["Enums"]["app_role"][]
-        }
-        Returns: boolean
-      }
-      is_company_member: { Args: { _company_id: string }; Returns: boolean }
-      shares_company_with: { Args: { _other: string }; Returns: boolean }
-    }
+          _company_id: string;
+          _roles: Database["public"]["Enums"]["app_role"][];
+        };
+        Returns: boolean;
+      };
+      is_company_member: { Args: { _company_id: string }; Returns: boolean };
+      shares_company_with: { Args: { _other: string }; Returns: boolean };
+    };
     Enums: {
       app_role:
-        | "admin"
-        | "diretoria"
-        | "fiscal"
-        | "compras"
-        | "financeiro"
-        | "comercial"
-        | "auditor"
-      integration_status:
-        | "nao_configurada"
-        | "em_configuracao"
-        | "ativa"
-        | "inativa"
-        | "erro"
-      integration_type:
-        | "erp"
-        | "adquirente"
-        | "documento_fiscal"
-        | "conciliacao"
-      tax_regime: "simples_nacional" | "lucro_presumido" | "lucro_real"
-    }
+        "admin" | "diretoria" | "fiscal" | "compras" | "financeiro" | "comercial" | "auditor";
+      integration_status: "nao_configurada" | "em_configuracao" | "ativa" | "inativa" | "erro";
+      integration_type: "erp" | "adquirente" | "documento_fiscal" | "conciliacao";
+      tax_regime: "simples_nacional" | "lucro_presumido" | "lucro_real";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">];
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
   EnumName extends (DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema["CompositeTypes"] | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
+    schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
+  schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
 
 export const Constants = {
   public: {
     Enums: {
-      app_role: [
-        "admin",
-        "diretoria",
-        "fiscal",
-        "compras",
-        "financeiro",
-        "comercial",
-        "auditor",
-      ],
-      integration_status: [
-        "nao_configurada",
-        "em_configuracao",
-        "ativa",
-        "inativa",
-        "erro",
-      ],
-      integration_type: [
-        "erp",
-        "adquirente",
-        "documento_fiscal",
-        "conciliacao",
-      ],
+      app_role: ["admin", "diretoria", "fiscal", "compras", "financeiro", "comercial", "auditor"],
+      integration_status: ["nao_configurada", "em_configuracao", "ativa", "inativa", "erro"],
+      integration_type: ["erp", "adquirente", "documento_fiscal", "conciliacao"],
       tax_regime: ["simples_nacional", "lucro_presumido", "lucro_real"],
     },
   },
-} as const
+} as const;
